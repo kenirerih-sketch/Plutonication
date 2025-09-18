@@ -78,6 +78,9 @@ export async function initializePlutonicationDAppClient(
 
         // requesting signature from wallet
         socket.emit("sign_payload", { Data: payloadJson, Room: roomKey })
+
+        console.log("sing_payload emitted");
+
         const signerResult = await new Promise<SignerResult>((resolve) => {
           socket.on("payload_signature", (receivedPayloadSignature: SignerResult) => {
 
@@ -91,6 +94,9 @@ export async function initializePlutonicationDAppClient(
 
         // requesting signature from wallet
         socket.emit("sign_raw", { Data: raw, Room: roomKey })
+
+        console.log("sing_raw emitted");
+
         const signerResult = await new Promise<SignerResult>((resolve) => {
           socket.on("raw_signature", (receivedPayloadSignature: SignerResult) => {
             resolve(receivedPayloadSignature)
