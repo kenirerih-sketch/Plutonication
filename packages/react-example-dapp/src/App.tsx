@@ -3,6 +3,7 @@ import type { SignerPayloadRaw } from "@polkadot/types/types"
 import type { Injected } from "@polkadot/extension-inject/types"
 import { ApiPromise, WsProvider } from "@polkadot/api"
 import { AccessCredentials, initializePlutonicationDAppClientWithModal } from "@plutonication/plutonication"
+import { Console } from "console"
 
 function App() {
   let account: Injected
@@ -10,7 +11,7 @@ function App() {
   let api: any
 
   const connectToApi = async() => {
-    api = await ApiPromise.create({ provider: new WsProvider("wss://ws.test.azero.dev") })
+    api = await ApiPromise.create({ provider: new WsProvider("wss://fraa-flashbox-4659-rpc.a.stagenet.tanssi.network") })
   }
 
   connectToApi()
@@ -28,7 +29,7 @@ function App() {
       "Plutonication test",
 
       // dApp icon
-      "https://rostislavlitovkin.pythonanywhere.com/plutowalleticonwhite",
+      "https://plutonication.com/wallets/plutowalletwhite",
     )
 
     account = await initializePlutonicationDAppClientWithModal(
@@ -81,11 +82,15 @@ function App() {
       return
     }
 
+    console.log("about send payload");
+
     // The actuall balance transfer.
     // Part of the code taken from: https://polkadot.js.org/docs/extension/usage
-    api.tx.balances
+    await api.tx.balances
       .transferKeepAlive("5C5555yEXUcmEJ5kkcCMvdZjUo7NGJiQJMS7vZXEeoMhj3VQ", 10**12)
       .signAndSend(publicKey, { signer: account.signer })
+
+    console.log("payload sent");
   }
 
   return (
